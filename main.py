@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 #game window
 winx = 0
@@ -10,6 +11,10 @@ HEIGHT = 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Placeholder name')
 #(1000 - 40) / 3 = 320
+
+#images
+stg = pygame.image.load('snap tik gram.png')
+stg = pygame.transform.scale(stg, (320, 190))
 
 #color defs
 BLACK = (0, 0, 0)
@@ -42,9 +47,14 @@ class screen():
       else:
          screenColor = GREY"""
       pygame.draw.rect(WIN, WHITE, pygame.Rect(self.x1, self.y1, self.wid, self.height), 2)
+   
+   def select(self):
+      #top left, top right, bottom left, bottom right
+      dist1 = math.sqrt(self.x1 ** 2 + self.y1 ** 2)
+      dist2 = math.sqrt((WIDTH - self.x2) ** 2 + self.y1 ** 2)
+      dist3 = math.sqrt(self.x2 ** 2 + (HEIGHT - self.y2) ** 2)
+      dist4 = math.sqrt((WIDTH - self.x2) ** 2 + (HEIGHT - self.y2) ** 2)
 
-def screen_scroll():
-   pass
 
 #aspect ratio of screens should roughly be 16:9
 s1 = screen((10, 80), 320, 190)
@@ -53,6 +63,21 @@ s3 = screen((340, 80), 320, 190)
 s4 = screen((340, 280), 320, 190) #390, 270
 s5 = screen((670, 80), 320, 190)
 s6 = screen((670, 280), 320, 190)
+
+
+def screen_click(x: int, y: int):
+   for screen in screens:
+      if (x > screen.x1 and x < screen.x2) and (y > screen.y1 and y < screen.y2):
+         return screens[screen]
+   return -1
+
+"""
+pygame.cursors.arrow
+pygame.cursors.diamond
+pygame.cursors.broken_x
+pygame.cursors.tri_left
+pygame.cursors.tri_right
+"""
 
 #main func
 def main():
@@ -79,6 +104,11 @@ def main():
                winy -= 25
             elif event.key == pygame.K_DOWN:
                winy += 25"""
+         
+         if event.type == pygame.MOUSEBUTTONUP:
+            x, y = pygame.mouse.get_pos()
+            print(x, y)
+
       
       #rectangle = surface, color, (x1, y1, x2, y2)
       s1.draw_screen()
@@ -87,6 +117,8 @@ def main():
       s4.draw_screen()
       s5.draw_screen()
       s6.draw_screen()
+
+      WIN.blit(stg, (10, 80))
 
       pygame.display.flip()
 
