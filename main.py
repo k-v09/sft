@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import next
 
 #game window
 winx = 0
@@ -12,8 +13,13 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Come on! You have to have a title')
 #(1000 - 40) / 3 = 320
 
+#1000 / 320 = 3.125
+#600 / 190 = 3.15
+
 #images
 stg = pygame.image.load('snap tik gram.png')
+swid = 320
+sheight = 190
 stg = pygame.transform.scale(stg, (320, 190))
 
 #color defs
@@ -58,6 +64,8 @@ class screen():
       dx2 = (1000 - self.x2) / 10
       dy1 = (0 - self.y1) / 10
       dy2 = (600 - self.y2) / 10
+      nwid = swid
+      nheight = sheight
       while self.x1 > 0:
          self.x1 += dx1
          self.y1 += dy1
@@ -66,6 +74,12 @@ class screen():
          self.wid = self.x2 - self.x1
          self.height = self.y2 - self.y1
          pygame.draw.rect(WIN, WHITE, pygame.Rect(self.x1, self.y1, self.wid, self.height))
+         global stg
+         nwid = nwid + dx1 + dx2
+         nheight = nheight + dy1 + dy2
+         stg = pygame.transform.scale(stg, (nwid, nheight))
+         WIN.blit(stg, (self.x1, self.y1))
+         pygame.display.flip()
 
 
 #aspect ratio of screens should roughly be 16:9
@@ -90,6 +104,25 @@ pygame.cursors.broken_x
 pygame.cursors.tri_left
 pygame.cursors.tri_right
 """
+
+modes = {
+   0: 'start', 1: 'split', 2: 'single'
+}
+mode = modes[1]
+def show_split():
+   WIN.fill(BLACK)
+   s1.draw_screen()
+   s2.draw_screen()
+   s3.draw_screen()
+   s4.draw_screen()
+   s5.draw_screen()
+   s6.draw_screen()
+   WIN.blit(stg, (10, 80))
+def show_single(s: screen):
+   bstg = pygame.image.load('snap tik gram.png')
+   bstg = pygame.transform.scale(bstg, (1000, 593.75))
+def show_start():
+   pass
 
 #main func
 def main():
@@ -122,18 +155,9 @@ def main():
             spacer = find_screen(x, y)
             if spacer >= 0:
                screens[spacer].select()
-
       
-      #rectangle = surface, color, (x1, y1, x2, y2)
-      s1.draw_screen()
-      s2.draw_screen()
-      s3.draw_screen()
-      s4.draw_screen()
-      s5.draw_screen()
-      s6.draw_screen()
-
-      WIN.blit(stg, (10, 80))
-
+      if mode == 'split':
+         show_split()
       pygame.display.flip()
 
 if __name__ == '__main__':
