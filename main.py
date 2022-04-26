@@ -9,7 +9,7 @@ pygame.init()
 WIDTH = 1000
 HEIGHT = 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Placeholder name')
+pygame.display.set_caption('Come on! You have to have a title')
 #(1000 - 40) / 3 = 320
 
 #images
@@ -54,6 +54,18 @@ class screen():
       dist2 = math.sqrt((WIDTH - self.x2) ** 2 + self.y1 ** 2)
       dist3 = math.sqrt(self.x2 ** 2 + (HEIGHT - self.y2) ** 2)
       dist4 = math.sqrt((WIDTH - self.x2) ** 2 + (HEIGHT - self.y2) ** 2)
+      dx1 = (0 - self.x1) / 10
+      dx2 = (1000 - self.x2) / 10
+      dy1 = (0 - self.y1) / 10
+      dy2 = (600 - self.y2) / 10
+      while self.x1 > 0:
+         self.x1 += dx1
+         self.y1 += dy1
+         self.x2 += dx2
+         self.y2 += dy2
+         self.wid = self.x2 - self.x1
+         self.height = self.y2 - self.y1
+         pygame.draw.rect(WIN, WHITE, pygame.Rect(self.x1, self.y1, self.wid, self.height))
 
 
 #aspect ratio of screens should roughly be 16:9
@@ -65,10 +77,10 @@ s5 = screen((670, 80), 320, 190)
 s6 = screen((670, 280), 320, 190)
 
 
-def screen_click(x: int, y: int):
+def find_screen(x: int, y: int):
    for screen in screens:
       if (x > screen.x1 and x < screen.x2) and (y > screen.y1 and y < screen.y2):
-         return screens[screen]
+         return screens.index(screen)
    return -1
 
 """
@@ -107,7 +119,9 @@ def main():
          
          if event.type == pygame.MOUSEBUTTONUP:
             x, y = pygame.mouse.get_pos()
-            print(x, y)
+            spacer = find_screen(x, y)
+            if spacer >= 0:
+               screens[spacer].select()
 
       
       #rectangle = surface, color, (x1, y1, x2, y2)
