@@ -129,12 +129,13 @@ def show_start():
 #main func
 def main():
 
-   start.start(WIN)
-
    global winx, winy
 
    #main game loop
    run = True
+
+   start.start(WIN)
+
    while run:
 
       WIN.fill(BLACK)
