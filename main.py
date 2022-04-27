@@ -1,7 +1,7 @@
 import pygame
 import random
 import math
-import next
+import start
 
 #game window
 winx = 0
@@ -80,6 +80,7 @@ class screen():
          stg = pygame.transform.scale(stg, (nwid, nheight))
          WIN.blit(stg, (self.x1, self.y1))
          pygame.display.flip()
+      mode = 'single'
 
 
 #aspect ratio of screens should roughly be 16:9
@@ -124,6 +125,7 @@ def show_single(s: screen):
 def show_start():
    pass
 
+
 #main func
 def main():
    global winx, winy
@@ -158,6 +160,10 @@ def main():
       
       if mode == 'split':
          show_split()
+      elif mode == 'single':
+         pass
+      elif mode == 'start':
+         pass
       pygame.display.flip()
 
 if __name__ == '__main__':
