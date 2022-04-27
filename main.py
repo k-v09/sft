@@ -128,6 +128,9 @@ def show_start():
 
 #main func
 def main():
+
+   start.start(WIN)
+
    global winx, winy
 
    #main game loop
